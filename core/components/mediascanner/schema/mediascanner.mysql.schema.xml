@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="MediaScanner\v3\Model\" baseClass="xPDO\Om\xPDOSimpleObject" platform="mysql" defaultEngine="InnoDB" version="3.0">
+    <object class="Media" table="mediascanner_media">
+        <field key="url" dbtype="text" phptype="string" null="false" />
+
+        <index alias="url" name="url" primary="false" unique="true" type="BTREE">
+            <column key="url" length="" collation="A" null="false" />
+        </index>
+
+        <composite alias="Resources" class="MediaScanner\v3\Model\MediaResources" local="id" foreign="medium" cardinality="many" owner="local" />
+    </object>
+    <object class="MediaResources" table="mediascanner_media_resources" extends="xPDO\Om\xPDOObject">
+        <field key="medium" dbtype="int" precision="11" attributes="unsigned" phptype="integer" null="false" />
+        <field key="resource" dbtype="int" precision="11" attributes="unsigned" phptype="integer" null="false" />
+
+        <index alias="PRIMARY" name="PRIMARY" primary="true" unique="true" type="BTREE">
+            <column key="medium" length="" collation="A" null="false" />
+            <column key="resource" length="" collation="A" null="false" />
+        </index>
+
+        <index alias="medium" name="medium" primary="false" unique="false" type="BTREE">
+            <column key="medium" length="" collation="A" null="false" />
+        </index>
+
+        <index alias="resource" name="resource" primary="false" unique="false" type="BTREE">
+            <column key="resource" length="" collation="A" null="false" />
+        </index>
+
+        <aggregate alias="Medium" class="MediaScanner\v3\Model\Media" local="medium" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Resource" class="MODX\Revolution\modResource" local="resource" foreign="id" cardinality="one" owner="foreign" />
+    </object>
+
+</model>

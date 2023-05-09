@@ -1,0 +1,82 @@
+<?php
+/*
+ * This file is part of MODX Revolution.
+ *
+ * Copyright (c) MODX, LLC. All Rights Reserved.
+ *
+ * For complete copyright and license information, see the COPYRIGHT and LICENSE
+ * files found in the top-level directory of this distribution.
+ */
+
+/**
+ * Removes a file.
+ *
+ * @param string $file The name of the file.
+ * @param boolean $prependPath If true, will prepend the rb_base_dir to the file
+ * name.
+ *
+ * @package modx
+ * @subpackage processors.browser.file
+ */
+class MediaScannerFileRemoveManyProcessor extends modProcessor {
+    /** @var modMediaSource|modFileMediaSource $source */
+    public $source;
+
+    public function checkPermissions() {
+        return $this->modx->hasPermission('file_remove');
+    }
+
+    public function getLanguageTopics() {
+        return ['file', 'mediascanner:default'];
+    }
+
+    public function process() {
+        $files = $this->getProperty('files');
+        if (empty($files)) {
+            return $this->modx->error->failure($this->modx->lexicon('file_err_ns'));
+        }
+
+        $loaded = $this->getSource();
+        if (!($this->source instanceof modMediaSource)) {
+            return $loaded;
+        }
+
+        if (!$this->source->checkPolicy('remove')) {
+            return $this->failure($this->modx->lexicon('permission_denied'));
+        }
+
+        foreach ($files as $file) {
+            $file = preg_replace('/[\.]{2,}/', '', $file);
+            $success = $this->source->removeObject($file);
+
+            if (empty($success)) {
+                $errors = $this->source->getErrors();
+                $msg = implode("\n", $errors);
+
+                return $this->failure($msg);
+            }
+        }
+
+        return $this->success();
+    }
+
+    /**
+     * @return boolean|string
+     */
+    public function getSource() {
+        $source = $this->getProperty('source',null);
+        if (empty($source)) {
+            return $this->modx->lexicon('mediascanner.err.source_required');
+        }
+
+        /** @var modMediaSource $source */
+        $this->modx->loadClass('sources.modMediaSource');
+        $this->source = modMediaSource::getDefaultSource($this->modx,$source);
+        if (!$this->source->getWorkingContext()) {
+            return $this->modx->lexicon('permission_denied');
+        }
+        $this->source->setRequestProperties($this->getProperties());
+        return $this->source->initialize();
+    }
+}
+return 'MediaScannerFileRemoveManyProcessor';

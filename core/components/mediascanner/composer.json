@@ -1,0 +1,11 @@
+{
+  "autoload": {
+    "psr-4": {
+      "MediaScanner\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.4",
+    "voku/simple_html_dom": "^4.8"
+  }
+}

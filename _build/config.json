@@ -1,0 +1,53 @@
+{
+  "name": "MediaScanner",
+  "version": "1.1.2",
+  "lowCaseName": "mediascanner",
+  "namespace": "MediaScanner",
+  "description": "Scan unused media",
+  "author": "not matdave",
+  "package" : {
+    "menus": [
+      {
+        "text": "mediascanner.menu",
+        "description": "mediascanner.menu_desc",
+        "action": "manage"
+      }
+    ],
+    "elements" : {
+      "plugins": [
+        {
+          "name": "MediaScanner",
+          "file": "MediaScanner.php",
+          "events": [
+            "OnDocFormPrerender",
+            "OnDocFormSave",
+            "OnEmptyTrash"
+          ]
+        }
+      ]
+    },
+    "systemSettings": [
+      {
+        "key": "allow_regenerate_button",
+        "value": 1,
+        "type": "combo-boolean"
+      },
+      {
+        "key": "scan_on_save",
+        "value": 1,
+        "type": "combo-boolean"
+      }
+    ]
+  },
+  "database": {
+    "tables": [
+      "MediaScannerMedia",
+      "MediaScannerMediaResources"
+    ]
+  },
+  "build": {
+    "license": "LICENSE.md",
+    "changelog": "CHANGELOG.md",
+    "readme": "README.md"
+  }
+}

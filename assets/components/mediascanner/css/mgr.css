@@ -1,0 +1,21 @@
+.not-applicable {
+  color: #999;
+  font-style: italic;
+}
+.x-toolbar .x-toolbar-cell .x-form-check-wrap label {
+  padding-left: 21px;
+}
+
+.ls-panel-desc {
+  border-radius: 4px;
+  background: #E4E4E4;
+  margin-bottom: 3px;
+}
+
+.ms-used {
+  color: green;
+}
+
+.ms-used a span {
+  color: green;
+}
