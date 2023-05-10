@@ -64,14 +64,11 @@ class MediaScannerFolderGetFilesProcessor extends modProcessor {
             return $this->failure($this->modx->lexicon('permission_denied'));
         }
 
-        $base = rtrim(preg_replace('/\/{2,}/', '/', $this->source->getBaseUrl()), '/') . '/';
-
         $list = $this->source->getObjectsInContainer($this->getProperty('dir'));
         $filesToScan = [];
 
         foreach ($list as &$item) {
-            $url = $base . urldecode($item['pathRelative']);
-            $filesToScan[$url] =& $item;
+            $filesToScan[$item['pathname']] =& $item;
         }
 
         if (empty($filesToScan)) {

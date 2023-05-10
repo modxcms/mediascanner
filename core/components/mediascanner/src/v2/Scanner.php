@@ -90,6 +90,8 @@ class Scanner
         $path = '/' . $path;
         if (!is_file($basePath . $path)) {
             return;
+        } else {
+            $url = $basePath . $path;
         }
 
         $medium = $this->modx->getObject('MediaScannerMedia', ['url' => $url]);
