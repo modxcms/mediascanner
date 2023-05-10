@@ -1,9 +1,10 @@
 <?php
 
-namespace MediaScanner\Elements\Event;
+namespace MediaScanner\v3\Elements\Event;
 
-use MediaScanner\Model\ResourceLinks;
-use MediaScanner\v2\Element\Event\Event;
+
+use MediaScanner\v3\Model\MediaResources;
+use MediaScanner\v3\Scanner;
 
 class OnEmptyTrash extends Event
 {
@@ -13,11 +14,11 @@ class OnEmptyTrash extends Event
         if (empty($ids) || !is_array($ids)) {
             return;
         }
-        $this->modx->removeCollection(ResourceLinks::class, [
+
+        $this->modx->removeCollection(MediaResources::class, [
             'resource:IN' => $ids
         ]);
-        $this->modx->removeCollection(ResourceLinksText::class, [
-            'resource:IN' => $ids
-        ]);
+
+        Scanner::purgeUnlinkedMedia($this->modx);
     }
 }

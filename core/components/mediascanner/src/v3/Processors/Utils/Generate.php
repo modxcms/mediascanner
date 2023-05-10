@@ -1,46 +1,60 @@
 <?php
+namespace MediaScanner\v3\Processors\Utils;
 
-namespace MediaScanner\Processors\Utils;
-
-use LinkStrategy\Traits\Resource;
-use MODX\Revolution\modContentType;
+use MediaScanner\v3\Scanner;
 use MODX\Revolution\modResource;
-use MODX\Revolution\Processors\ModelProcessor;
-use xPDO\xPDO;
+use MODX\Revolution\modX;
+use MODX\Revolution\Processors\Processor;
 
-class Generate extends ModelProcessor
+class Generate extends Processor
 {
-    use Resource;
-
-    public $languageTopics = ['linkstrategy:default'];
-    public $objectType = 'linkstrategy.generate';
+    public $languageTopics = ['mediascanner:default'];
+    public $objectType = 'mediascanner.generate';
+    protected $resource;
 
     public function process()
     {
         $count = $this->generate();
-        return $this->success($this->modx->lexicon('linkstrategy.generate.complete', ['count' => $count]));
+        return $this->success($this->modx->lexicon('mediascanner.scan.complete', ['count' => $count]));
     }
 
     public function generate()
     {
         $c = $this->modx->newQuery(modResource::class);
-        $c->leftJoin(modContentType::class, 'ContentType');
-        $c->where(['ContentType.mime_type' => 'text/html']);
-        $collection = $this->modx->getCollection(modResource::class, $c);
+        $c->where([
+            'contentType' => 'text/html',
+            [
+                [
+                    'class_key:!=' => 'modWebLink'
+                ],
+                [
+                    'class_key:!=' => 'modSymLink'
+                ],
+            ]
+        ]);
+
         $count = $this->modx->getCount(modResource::class, $c);
-        foreach ($collection as $resource) {
-            $this->resource = $resource;
-            $this->object = $resource;
-            $this->clearResourceLinks();
-            $this->processLinks();
+
+        $scanner = new Scanner($this->modx);
+
+        /** @var modResource[] $resources */
+        $resources = $this->modx->getIterator(modResource::class, $c);
+
+        foreach ($resources as $resource) {
+            $scanner->scan($resource);
+
             $this->modx->log(
-                xPDO::LOG_LEVEL_INFO,
-                $this->modx->lexicon('linkstrategy.generate.status', [
+                modX::LOG_LEVEL_INFO,
+                $this->modx->lexicon('mediascanner.scan.status', [
                     'id' => $this->resource->id,
                     'pagetitle' => $this->resource->pagetitle,
                 ])
             );
         }
+
+        Scanner::purgeUnlinkedMedia($this->modx);
+
         return $count;
     }
+
 }

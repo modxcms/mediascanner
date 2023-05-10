@@ -1,37 +1,23 @@
 <?php
 
-namespace MediaScanner\Elements\Event;
+namespace MediaScanner\v3\Elements\Event;
 
-use LinkStrategy\Traits\Resource;
-use MediaScanner\v2\Element\Event\Event;
-use MODX\Revolution\modContentType;
-use MODX\Revolution\modResource;
-use MODX\Revolution\modSystemEvent;
+
+use MediaScanner\v3\Scanner;
 
 class OnDocFormSave extends Event
 {
-    use Resource;
-
     public function run()
     {
-        $mode = $this->getOption('mode');
-        $this->resource = $this->getOption('resource');
-        $allowRegenerate = $this->mediaScanner->getOption('allow_regenerate_onsave');
-        if (empty($this->resource) ||
-            !$allowRegenerate
+        $resource = $this->getOption('resource');
+        $scanOnSave = $this->mediaScanner->getOption('scan_on_save') === '1';
+        if (empty($resource) || !$scanOnSave
         ) {
             return;
         }
-        // Only Check on HTML Content Types
-        $contentType = $this->modx->getObject(modContentType::class, $this->resource->get('content_type'));
-        if (empty($contentType) ||
-            $contentType->get('mime_type') !== 'text/html'
-        ) {
-            return;
-        }
-        if ($mode !== modSystemEvent::MODE_NEW) {
-            $this->clearResourceLinks();
-        }
-        $this->processLinks();
+
+        $scanner = new Scanner($this->modx);
+        $scanner->scan($resource);
+        Scanner::purgeUnlinkedMedia($this->modx);
     }
 }

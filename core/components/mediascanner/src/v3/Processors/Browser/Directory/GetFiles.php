@@ -1,30 +1,13 @@
 <?php
-/*
- * This file is part of MODX Revolution.
- *
- * Copyright (c) MODX, LLC. All Rights Reserved.
- *
- * For complete copyright and license information, see the COPYRIGHT and LICENSE
- * files found in the top-level directory of this distribution.
- */
+namespace MediaScanner\v3\Processors\Browser\Directory;
 
-/**
- * Gets all files in a directory
- *
- * @param string $dir The directory to browse
- * @param boolean $prependPath (optional) If true, will prepend rb_base_dir to
- * the final path
- * @param boolean $prependUrl (optional) If true, will prepend rb_base_url to
- * the final url
- *
- * @var modX $modx
- * @var array $scriptProperties
- * @var modProcessor $this
- *
- * @package modx
- * @subpackage processors.browser.directory
- */
-class MediaScannerFolderGetFilesProcessor extends modProcessor {
+use MediaScanner\v3\Model\Media;
+use MODX\Revolution\Processors\Processor;
+use MODX\Revolution\Sources\modFileMediaSource;
+use MODX\Revolution\Sources\modMediaSource;
+
+class GetFiles extends Processor
+{
     /** @var modMediaSource|modFileMediaSource $source */
     public $source;
     public function checkPermissions() {
@@ -79,7 +62,7 @@ class MediaScannerFolderGetFilesProcessor extends modProcessor {
         }
 
         /** @var \MediaScannerMedia[] $media */
-        $media = $this->modx->getIterator('MediaScannerMedia', ['url:IN' => array_keys($filesToScan)]);
+        $media = $this->modx->getIterator(Media::class, ['url:IN' => array_keys($filesToScan)]);
 
         foreach ($media as $medium) {
             $filesToScan[$medium->url]['msUsed'] = true;
@@ -93,7 +76,6 @@ class MediaScannerFolderGetFilesProcessor extends modProcessor {
      * @return modMediaSource|boolean
      */
     public function getSource() {
-        $this->modx->loadClass('sources.modMediaSource');
         $this->source = modMediaSource::getDefaultSource($this->modx,$this->getProperty('source'));
         if (empty($this->source) || !$this->source->getWorkingContext()) {
             return false;
@@ -101,4 +83,3 @@ class MediaScannerFolderGetFilesProcessor extends modProcessor {
         return $this->source;
     }
 }
-return 'MediaScannerFolderGetFilesProcessor';

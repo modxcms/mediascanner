@@ -10,17 +10,17 @@ class MediaScanner
 
     public $namespace = 'mediascanner';
 
-    /** @var array $config */
-    public $config = [];
+    /** @var array $options */
+    public $options = [];
 
-    function __construct(modX &$modx, array $config = [])
+    function __construct(modX &$modx, array $options = [])
     {
         $this->modx =& $modx;
 
-        $corePath = $this->getOption('core_path', $config, $this->modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/mediascanner/');
-        $assetsUrl = $this->getOption('assets_url', $config, $this->modx->getOption('assets_url', null, MODX_ASSETS_URL) . 'components/mediascanner/');
+        $corePath = $this->getOption('core_path', $options, $this->modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/mediascanner/');
+        $assetsUrl = $this->getOption('assets_url', $options, $this->modx->getOption('assets_url', null, MODX_ASSETS_URL) . 'components/mediascanner/');
 
-        $this->config = array_merge(
+        $this->options = array_merge(
             [
                 'corePath'  => $corePath,
                 'srcPath'   => $corePath . 'src/',
@@ -32,7 +32,7 @@ class MediaScanner
                 'templatesPath' => $corePath . 'templates/',
                 'processorsPath' => $corePath . 'src/Processors',
             ],
-            $config
+            $options
         );
         $this->modx->lexicon->load('mediascanner:default');
     }
@@ -54,8 +54,8 @@ class MediaScanner
         if (!empty($key) && is_string($key)) {
             if ($options != null && array_key_exists($key, $options)) {
                 $option = $options[$key];
-            } elseif (array_key_exists($key, $this->config)) {
-                $option = $this->config[$key];
+            } elseif (array_key_exists($key, $this->options)) {
+                $option = $this->options[$key];
             } elseif (array_key_exists("{$this->namespace}.{$key}", $this->modx->config)) {
                 $option = $this->modx->getOption("{$this->namespace}.{$key}");
             }

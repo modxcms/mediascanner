@@ -20,7 +20,7 @@ Ext.extend(Mediascanner, Ext.Component, {
 
     getAction(processor) {
         if (mediaScanner.config.modx3) {
-            return `MediaScanner\\${processor}`;
+            return `MediaScanner\\v3\\Processors\\${processor}`;
         }
 
         return `mgr/${processor.split('\\').join('/').toLowerCase()}`

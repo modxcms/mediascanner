@@ -1,8 +1,8 @@
 <?php
 
-namespace MediaScanner\Elements\Event;
+namespace MediaScanner\v3\Elements\Event;
 
-use MediaScanner\MediaScanner;
+use MediaScanner\v3\MediaScanner;
 use MODX\Revolution\modX;
 
 abstract class Event

@@ -1,13 +1,11 @@
 <?php
 
-namespace MediaScanner\Elements\Event;
+namespace MediaScanner\v3\Elements\Event;
 
-use MediaScanner\v2\Element\Event\Event;
 use MODX\Revolution\modSystemEvent;
 
 class OnDocFormPrerender extends Event
 {
-
     public function run()
     {
         $mode = $this->getOption('mode');
@@ -16,10 +14,20 @@ class OnDocFormPrerender extends Event
             return;
         }
         $this->modx->controller->addLexiconTopic('mediascanner:default');
-        $this->modx->regClientCSS($this->mediaScanner->config['cssUrl'] . 'mgr.css');
-        $this->modx->regClientStartupScript($this->mediaScanner->config['jsUrl'] . 'mgr/mediascanner.js');
-        $this->modx->regClientStartupScript($this->mediaScanner->config['jsUrl'] . 'mgr/utils/combos.js');
-        $this->modx->regClientStartupScript($this->mediaScanner->config['jsUrl'] . 'mgr/widgets/media.grid.js');
+        $this->modx->regClientCSS($this->mediaScanner->options['cssUrl'] . 'mgr.css');
+        $this->modx->regClientStartupScript($this->mediaScanner->options['jsUrl'] . 'mgr/mediascanner.js');
+        $this->modx->regClientStartupScript($this->mediaScanner->options['jsUrl'] . 'mgr/utils/combos.js');
+        $this->modx->regClientStartupScript($this->mediaScanner->options['jsUrl'] . 'mgr/widgets/media.grid.js');
+
+        $this->mediaScanner->options['modx3'] = ($this->modx->version['version'] >= 3);
+
+        $this->modx->regClientStartupHTMLBlock('
+            <script type="text/javascript">
+                Ext.onReady(function() {
+                    mediaScanner.config = '.$this->modx->toJSON($this->mediaScanner->options).';
+                });
+            </script>
+        ');
 
         $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
             Ext.onReady(function() {

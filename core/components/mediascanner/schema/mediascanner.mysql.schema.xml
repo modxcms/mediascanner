@@ -4,7 +4,7 @@
         <field key="url" dbtype="text" phptype="string" null="false" />
 
         <index alias="url" name="url" primary="false" unique="true" type="BTREE">
-            <column key="url" length="" collation="A" null="false" />
+            <column key="url" length="254" collation="A" null="false" />
         </index>
 
         <composite alias="Resources" class="MediaScanner\v3\Model\MediaResources" local="id" foreign="medium" cardinality="many" owner="local" />

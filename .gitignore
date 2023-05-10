@@ -2,6 +2,8 @@
 ################
 _build/build.config.php
 config.core.php
+config.core.2x.php
+config.core.3x.php
 
 # Packages #
 ############
