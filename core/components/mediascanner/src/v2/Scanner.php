@@ -3,28 +3,35 @@ namespace MediaScanner\v2;
 
 use voku\helper\HtmlDomParser;
 
-class Scanner {
+class Scanner
+{
     /** @var \modX */
     private \modX $modx;
 
     public function __construct(\modX &$modx)
     {
         $this->modx =& $modx;
-
     }
     public function scan(\modResource $resource)
     {
         $isValid = $this->validateResource($resource);
-        if (!$isValid) return;
+        if (!$isValid) {
+            return;
+        }
 
         $this->clearResourceLinks($resource->id);
         $this->renderResource($resource);
         $this->findMedia($this->modx->resource->_output, $resource->id);
     }
 
-    private function validateResource(\modResource $resource) {
-        if ($resource->ContentType->mime_type !== 'text/html') return false;
-        if (in_array($resource->class_key, ['modWebLink', 'modSymLink'])) return false;
+    private function validateResource(\modResource $resource)
+    {
+        if ($resource->ContentType->mime_type !== 'text/html') {
+            return false;
+        }
+        if (in_array($resource->class_key, ['modWebLink', 'modSymLink'])) {
+            return false;
+        }
 
         return true;
     }
@@ -38,7 +45,7 @@ class Scanner {
 
     private function renderResource(\modResource $resource)
     {
-        require_once( MODX_CORE_PATH. '/model/modx/modrequest.class.php');
+        require_once(MODX_CORE_PATH. '/model/modx/modrequest.class.php');
         $this->modx->switchContext($resource->context_key);
         $this->modx->resource = $resource;
         $this->modx->resourceIdentifier = $resource->id;
@@ -59,7 +66,12 @@ class Scanner {
 
     protected function addMedia($url, $resourceId)
     {
+        $basePath = rtrim($this->modx->getOption('base_path'), '/');
         if (empty($url)) {
+            return;
+        }
+
+        if (preg_match('/^(http:\/\/|https:\/\/|\/\/)/', $url)) {
             return;
         }
 
@@ -67,6 +79,16 @@ class Scanner {
         $matches = [];
         $tagsFound = $this->modx->getParser()->collectElementTags($url, $matches);
         if ($tagsFound > 0) {
+            return;
+        }
+
+        // Check if it's a file
+        $path = trim($url, "'");
+        $path = ltrim($path, $this->modx->getOption('base_url'));
+        $path = ltrim($path, '/');
+        $path = str_replace('%20', ' ', $path);
+        $path = '/' . $path;
+        if (!is_file($basePath . $path)) {
             return;
         }
 
