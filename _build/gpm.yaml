@@ -8,6 +8,7 @@ menus:
   - text: mediascanner.menu
     description: mediascanner.menu_desc
     action: manage
+    parent: media
 plugins:
   - name: MediaScanner
     events:

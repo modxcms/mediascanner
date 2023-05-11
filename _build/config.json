@@ -10,7 +10,8 @@
       {
         "text": "mediascanner.menu",
         "description": "mediascanner.menu_desc",
-        "action": "manage"
+        "action": "manage",
+        "parent": "media"
       }
     ],
     "elements" : {
