@@ -35,6 +35,8 @@ class MediaFinder {
 
             if (!$this->checkUrl($url)) continue;
 
+            $url = '/' . ltrim($url, '/');
+
             $callback($url);
         }
     }
@@ -52,6 +54,8 @@ class MediaFinder {
         if ($tagsFound > 0) {
             return false;
         }
+
+        $url = '/' . ltrim($url, '/');
 
         if (!empty($this->baseUrl) && substr_compare($url, $this->baseUrl, 0, strlen($this->baseUrl)) === 0) {
             $url = substr($url, strlen($this->baseUrl));
