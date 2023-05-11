@@ -26,6 +26,8 @@ class MediaFinder {
 
             if (!$this->checkUrl($url)) continue;
 
+            $url = '/' . ltrim($url, '/');
+
             $callback($url);
         }
 
