@@ -63,7 +63,7 @@ class MediaFinder {
             return false;
         }
 
-        if (is_dir($path)) {
+        if (!is_file($path)) {
             return false;
         }
 
