@@ -1,17 +1,20 @@
 <?php
 namespace MediaScanner\v2;
 
-use voku\helper\HtmlDomParser;
+use MediaScanner\MediaFinder;
 
 class Scanner
 {
     /** @var \modX */
     private \modX $modx;
+    private MediaFinder $mf;
 
     public function __construct(\modX &$modx)
     {
         $this->modx =& $modx;
+        $this->mf = new MediaFinder($this->modx);
     }
+
     public function scan(\modResource $resource)
     {
         $isValid = $this->validateResource($resource);
@@ -21,7 +24,10 @@ class Scanner
 
         $this->clearResourceLinks($resource->id);
         $this->renderResource($resource);
-        $this->findMedia($this->modx->resource->_output, $resource->id);
+
+        $this->mf->findMedia($this->modx->resource->_output, function($url) use ($resource) {
+            $this->addMedia($url, $resource->id);
+        });
     }
 
     private function validateResource(\modResource $resource)
@@ -54,46 +60,8 @@ class Scanner
         $this->modx->resource->prepare();
     }
 
-    private function findMedia($content, $resourceId)
-    {
-        $dom = HtmlDomParser::str_get_html($content);
-        $anchors = $dom->findMulti('img');
-        foreach ($anchors as $anchor) {
-            $src = $anchor->getAttribute('src');
-            $this->addMedia($src, $resourceId);
-        }
-    }
-
     protected function addMedia($url, $resourceId)
     {
-        $basePath = rtrim($this->modx->getOption('base_path'), '/');
-        if (empty($url)) {
-            return;
-        }
-
-        if (preg_match('/^(http:\/\/|https:\/\/|\/\/)/', $url)) {
-            return;
-        }
-
-        // ignore tags
-        $matches = [];
-        $tagsFound = $this->modx->getParser()->collectElementTags($url, $matches);
-        if ($tagsFound > 0) {
-            return;
-        }
-
-        // Check if it's a file
-        $path = trim($url, "'");
-        $path = ltrim($path, $this->modx->getOption('base_url'));
-        $path = ltrim($path, '/');
-        $path = str_replace('%20', ' ', $path);
-        $path = '/' . $path;
-        if (!is_file($basePath . $path)) {
-            return;
-        } else {
-            $url = $basePath . $path;
-        }
-
         $medium = $this->modx->getObject('MediaScannerMedia', ['url' => $url]);
         if (empty($medium)) {
             $medium = $this->modx->newObject('MediaScannerMedia');

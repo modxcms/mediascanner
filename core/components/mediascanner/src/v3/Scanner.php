@@ -1,6 +1,7 @@
 <?php
 namespace MediaScanner\v3;
 
+use MediaScanner\MediaFinder;
 use MediaScanner\v3\Model\Media;
 use MediaScanner\v3\Model\MediaResources;
 use MODX\Revolution\modRequest;
@@ -8,17 +9,18 @@ use MODX\Revolution\modResource;
 use MODX\Revolution\modSymLink;
 use MODX\Revolution\modWebLink;
 use MODX\Revolution\modX;
-use voku\helper\HtmlDomParser;
 
 class Scanner {
     /** @var modX */
     private modX $modx;
+    private MediaFinder $mf;
 
     public function __construct(modX &$modx)
     {
         $this->modx =& $modx;
-
+        $this->mf = new MediaFinder($this->modx);
     }
+
     public function scan(modResource $resource)
     {
         $isValid = $this->validateResource($resource);
@@ -26,7 +28,10 @@ class Scanner {
 
         $this->clearResourceLinks($resource->id);
         $this->renderResource($resource);
-        $this->findMedia($this->modx->resource->_output, $resource->id);
+
+        $this->mf->findMedia($this->modx->resource->_output, function($url) use ($resource) {
+            $this->addMedia($url, $resource->id);
+        });
     }
 
     private function validateResource(modResource $resource) {
@@ -53,29 +58,8 @@ class Scanner {
         $this->modx->resource->prepare();
     }
 
-    private function findMedia($content, $resourceId)
-    {
-        $dom = HtmlDomParser::str_get_html($content);
-        $anchors = $dom->findMulti('img');
-        foreach ($anchors as $anchor) {
-            $src = $anchor->getAttribute('src');
-            $this->addMedia($src, $resourceId);
-        }
-    }
-
     protected function addMedia($url, $resourceId)
     {
-        if (empty($url)) {
-            return;
-        }
-
-        // ignore tags
-        $matches = [];
-        $tagsFound = $this->modx->getParser()->collectElementTags($url, $matches);
-        if ($tagsFound > 0) {
-            return;
-        }
-
         $medium = $this->modx->getObject(Media::class, ['url' => $url]);
         if (empty($medium)) {
             $medium = $this->modx->newObject(Media::class);
