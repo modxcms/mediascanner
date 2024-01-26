@@ -9,7 +9,7 @@ mediaScanner.grid.Media = function (config) {
     },
     autosave: false,
     preventSaveRefresh: true,
-    fields: ["id", "url"],
+    fields: ["id", "url", "msUsed"],
     paging: true,
     remoteSort: true,
     emptyText: _("mediascanner.global.no_records"),
@@ -67,6 +67,15 @@ Ext.extend(mediaScanner.grid.Media, MODx.grid.Grid, {
     ];
   },
 
+  getMenu: function () {
+    var m = [];
+    m.push({
+      text: _("mediascanner.global.explore"),
+      handler: this.exploreLink,
+    });
+    return m;
+  },
+
   exportFilters: function (comp, search) {
     const store = this.getStore();
     const urlParams = new URLSearchParams(store.baseParams);
@@ -74,6 +83,15 @@ Ext.extend(mediaScanner.grid.Media, MODx.grid.Grid, {
     urlParams.set('HTTP_MODAUTH', MODx.siteId);
 
     window.location = `${this.config.url}?${urlParams.toString()}`;
+  },
+
+  exploreLink: function (btn, e) {
+    const record = this.menu.record;
+    const win = MODx.load({
+      xtype: "mediascanner-window-links-explore",
+      record: record,
+    });
+    win.show(e.target);
   },
 
   filterSearch: function (comp, search) {

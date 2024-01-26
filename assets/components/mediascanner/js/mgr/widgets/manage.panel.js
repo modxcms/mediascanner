@@ -45,6 +45,23 @@ mediaScanner.panel.Manage = function (config) {
                                 xtype: 'mediascanner-browser-media',
                             }
                         ]
+                    },
+                    {
+                        title: _('mediascanner.manage.linked_media'),
+                        layout: 'form',
+                        items: [
+                            {
+                                html: '<p>' + _('mediascanner.manage.linked_media_desc') + '</p>',
+                                border: false,
+                                cls: 'panel-desc'
+                            },
+                            {
+                                cls: 'main-wrapper',
+                                width: '100%',
+                                height: '800px',
+                                xtype: 'mediascanner-grid-media',
+                            }
+                        ]
                     }
                 ]
         }

@@ -18,6 +18,9 @@ class MediaScannerManageManagerController extends MediaScannerBaseManagerControl
         $this->addLastJavascript($this->mediaScanner->getOption('jsUrl') . 'mgr/utils/combos.js');
         $this->addLastJavascript($this->mediaScanner->getOption('jsUrl') . 'mgr/widgets/browser/files.grid.js');
         $this->addLastJavascript($this->mediaScanner->getOption('jsUrl') . 'mgr/widgets/browser/media.browser.js');
+        $this->addLastJavascript($this->mediaScanner->getOption('jsUrl') . 'mgr/widgets/links/explore.grid.js');
+        $this->addLastJavascript($this->mediaScanner->getOption('jsUrl') . 'mgr/widgets/links/explore.window.js');
+        $this->addLastJavascript($this->mediaScanner->getOption('jsUrl') . 'mgr/widgets/media.grid.js');
         $this->addLastJavascript($this->mediaScanner->getOption('jsUrl') . 'mgr/widgets/manage.panel.js');
         $this->addLastJavascript($this->mediaScanner->getOption('jsUrl') . 'mgr/sections/manage.js');
 

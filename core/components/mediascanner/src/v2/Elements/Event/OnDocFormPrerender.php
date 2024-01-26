@@ -6,9 +6,11 @@ class OnDocFormPrerender extends Event
 
     public function run()
     {
+        $this->modx->log(\modX::LOG_LEVEL_ERROR, '[MediaScanner] OnDocFormPrerender');
         $mode = $this->getOption('mode');
         $resource =  $this->getOption('resource');
         if (($mode === \modSystemEvent::MODE_NEW) || !$resource) {
+            $this->modx->log(\modX::LOG_LEVEL_ERROR, '[MediaScanner] Resource not found');
             return;
         }
 

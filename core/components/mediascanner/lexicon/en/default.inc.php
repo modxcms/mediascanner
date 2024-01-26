@@ -4,12 +4,13 @@ $_lang['mediascanner'] = 'Media Scanner';
 $_lang['mediascanner.menu'] = 'Media Scanner';
 $_lang['mediascanner.menu_desc'] = 'Scan media on your site';
 $_lang['mediascanner.manage.page_title'] = 'Media Scanner';
-$_lang['mediascanner.manage.media'] = 'Media';
-$_lang['mediascanner.manage.media_desc'] = 'Media';
-$_lang['mediascanner.manage.resourcelinkstext'] = 'Linked Words';
-$_lang['mediascanner.manage.resourcelinkstext_desc'] = 'View words linked on your site';
-$_lang['mediascanner.manage.orphans'] = 'Orphans';
-$_lang['mediascanner.manage.orphans_desc'] = 'View orphaned resources on your site';
+$_lang['mediascanner.manage.media'] = 'Media Browser';
+$_lang['mediascanner.manage.media_desc'] = 'This is a list of media found on your site. Green items are linked to '.
+    'resources. This list is just an approximation of what is actually used on your site, and doesn\'t take into '.
+    'account dynamically inserted media or media with altered paths (e.g. phpThumb). It is highly recommended that '.
+    'you manually review the media on your site before deleting.';
+$_lang['mediascanner.manage.linked_media'] = 'Linked Media';
+$_lang['mediascanner.manage.linked_media_desc'] = 'View media linked on your site';
 
 $_lang['mediascanner.global.no_records'] = 'No records found';
 $_lang['mediascanner.global.clear'] = 'Clear';
@@ -22,23 +23,11 @@ $_lang['mediascanner.global.linkedon'] = 'Linked On';
 $_lang['mediascanner.global.url'] = 'URL';
 $_lang['mediascanner.global.explore'] = 'Explore';
 
-$_lang['mediascanner.links.context_key'] = 'Context Key';
-$_lang['mediascanner.links.internal'] = 'Internal Link';
-$_lang['mediascanner.links.uri'] = 'URI';
-$_lang['mediascanner.links.variants'] = 'Text Variants';
-$_lang['mediascanner.links.variant'] = 'Unique Text';
-$_lang['mediascanner.links.explore'] = 'Explore Link "[[+url]]"';
-
-$_lang['mediascanner.resourcelinkstext.link'] = 'Link';
-$_lang['mediascanner.resourcelinkstext.text'] = 'Text';
-$_lang['mediascanner.resourcelinkstext.variants'] = 'Link Variants';
-$_lang['mediascanner.resourcelinkstext.variant'] = 'Unique Link';
-$_lang['mediascanner.resourcelinkstext.explore'] = 'Explore Text "[[+text]]"';
-
-$_lang['mediascanner.orphans.published'] = 'Published';
-$_lang['mediascanner.orphans.deleted'] = 'Deleted';
-$_lang['mediascanner.orphans.hide_unpublished'] = 'Hide Unpublished';
-$_lang['mediascanner.orphans.hide_deleted'] = 'Hide Deleted';
+$_lang['mediascanner.linked_media.media'] = 'Media';
+$_lang['mediascanner.linked_media.text'] = 'Text';
+$_lang['mediascanner.linked_media.variants'] = 'Link Variants';
+$_lang['mediascanner.linked_media.variant'] = 'Unique Link';
+$_lang['mediascanner.linked_media.explore'] = 'Explore Text "[[+text]]"';
 
 $_lang['mediascanner.scan.status'] = 'Scanned for Media on [[+pagetitle]] ([[+id]])';
 $_lang['mediascanner.scan.complete'] = 'Scanned for Media on [[+count]] Resources';

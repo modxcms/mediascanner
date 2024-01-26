@@ -9,6 +9,7 @@ mediaScanner.grid.Files = function (config) {
     url: mediaScanner.getConnector(),
     baseParams: {
       action: mediaScanner.getAction('Browser\\Directory\\GetFiles'),
+      source: config.source || MODx.config.default_media_source,
     },
     autosave: false,
     preventSaveRefresh: true,
@@ -176,6 +177,25 @@ Ext.extend(mediaScanner.grid.Files, MODx.grid.Grid, {
     });
   },
 
+  singleDelete: function() {
+    console.log(this);
+    MODx.msg.confirm({
+      text: _('file_confirm_remove'),
+      url: mediaScanner.getConnector(),
+      params: {
+        action: mediaScanner.getAction('Browser\\Files\\Remove'),
+        'file': this.menu.record.pathRelative,
+        source: this.store.baseParams.source
+      },
+      listeners: {
+        success: {
+          fn: this.run,
+          scope: this
+        }
+      }
+    });
+  },
+
   rememberRow: function (record) {
     if (this.selectedRecords.indexOf(record.data.pathRelative) === -1) {
       this.selectedRecords.push(record.data.pathRelative);
@@ -263,6 +283,19 @@ Ext.extend(mediaScanner.grid.Files, MODx.grid.Grid, {
       cls: 'modx-browser-pathbbar',
       items: [this.pathBarInput]
     };
-  }
+  },
+
+  getMenu: function () {
+    var m = [];
+    if (!this.menu.record.msUsed) {
+        m.push({
+            text: _("mediascanner.media_browser.delete"),
+            iconCls: "icon-trash",
+            handler: this.singleDelete,
+            scope: this,
+        });
+    }
+    return m;
+  },
 });
 Ext.reg("mediascanner-grid-files", mediaScanner.grid.Files);
