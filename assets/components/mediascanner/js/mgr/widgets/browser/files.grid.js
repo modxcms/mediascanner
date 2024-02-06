@@ -86,7 +86,7 @@ Ext.extend(mediaScanner.grid.Files, MODx.grid.Grid, {
         ,'  <tpl for=".">'
         ,'  <tpl if="preview === 1">'
         ,'      <div class="modx-browser-detail-thumb preview">'
-        ,'          <img src="{image:htmlEncode}" loading="lazy" width="{image_width}" height="{image_height}" alt="{name:htmlEncode}" title="{name:htmlEncode}" />'
+        ,'          <img src="{image:htmlEncode}" loading="lazy" width="{image_width}" height="{image_height}" alt="{name:htmlEncode}" title="{name:htmlEncode}" style="height:auto;" />'
         ,'      </div>'
         ,'  </tpl>'
         ,'  <div class="modx-browser-details-info">'
