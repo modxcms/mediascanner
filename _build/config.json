@@ -37,6 +37,9 @@
         "key": "scan_on_save",
         "value": 1,
         "type": "combo-boolean"
+      },
+      {
+        "key": "skip_scan"
       }
     ]
   },

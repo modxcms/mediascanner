@@ -1,6 +1,6 @@
 <?php
 /**
- * LinkStrategy Connector
+ * MediaScanner Connector
  *
  * @package mediascanner
  *
@@ -22,7 +22,7 @@ $mediaScanner = $modx->getService(
 );
 
 /* handle request */
-$path = $modx->getOption('processorsPath', $modx->linkstrategy->config, $corePath . 'processors/');
+$path = $modx->getOption('processorsPath', $mediaScanner->options, $corePath . 'processors/');
 $modx->request->handleRequest(array(
     'processors_path' => $path,
     'location' => '',

@@ -66,6 +66,11 @@ mediaScanner.panel.Manage = function (config) {
                 ]
         }
         ],
+        listeners: {
+            'failure': function(f, r, o, c) {
+                MODx.msg.alert(_('mediascanner.err.scan_failed'), _('mediascanner.err.scan_failed_desc'));
+            }
+        }
     });
     mediaScanner.panel.Manage.superclass.constructor.call(this, config);
 };

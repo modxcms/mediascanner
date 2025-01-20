@@ -9,10 +9,16 @@ class Scanner
     private \modX $modx;
     private MediaFinder $mf;
 
+    private array $skip = [];
+
     public function __construct(\modX &$modx)
     {
         $this->modx =& $modx;
         $this->mf = new MediaFinder($this->modx);
+        $skip = $this->modx->getOption('mediascanner.skip_scan');
+        if (!empty($skip)) {
+            $this->skip = explode(',', $skip);
+        }
     }
 
     public function scan(\modResource $resource)
@@ -23,15 +29,23 @@ class Scanner
         }
 
         $this->clearResourceLinks($resource->id);
-        $this->renderResource($resource);
-
-        $this->mf->findMedia($this->modx->resource->_output, function($url) use ($resource) {
-            $this->addMedia($url, $resource->id);
-        });
+        try {
+            $this->renderResource($resource);
+            $this->mf->findMedia($this->modx->resource->_output, function($url) use ($resource) {
+                $this->addMedia($url, $resource->id);
+            });
+        } catch (\Exception $e) {
+            $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Error rendering resource: ' . $resource->id);
+        }
+        $this->modx->config['modResponse.class'] = 'modResponse';
+        $this->modx->response = new \modResponse($this->modx);
     }
 
     private function validateResource(\modResource $resource)
     {
+        if (in_array($resource->id, $this->skip)) {
+            return false;
+        }
         if ($resource->ContentType->mime_type !== 'text/html') {
             return false;
         }
@@ -51,12 +65,14 @@ class Scanner
 
     private function renderResource(\modResource $resource)
     {
-        require_once(MODX_CORE_PATH. '/model/modx/modrequest.class.php');
         $this->modx->switchContext($resource->context_key);
         $this->modx->resource = $resource;
         $this->modx->resourceIdentifier = $resource->id;
         $this->modx->elementCache = [];
-        $this->modx->request = new \modRequest($this->modx, [], [], [], []);
+        $this->modx->config['modResponse.class'] = scanResponse::class;
+        $this->modx->response = new scanResponse($this->modx);
+        $this->modx->request = new scanRequest($this->modx, [], [], [], []);
+        $this->modx->setOption('parser_max_iterations', 0);
         $this->modx->resource->prepare();
     }
 

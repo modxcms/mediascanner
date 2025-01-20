@@ -4,7 +4,7 @@ namespace MediaScanner\v3;
 use MediaScanner\MediaFinder;
 use MediaScanner\v3\Model\Media;
 use MediaScanner\v3\Model\MediaResources;
-use MODX\Revolution\modRequest;
+use MODX\Revolution\modResponse;
 use MODX\Revolution\modResource;
 use MODX\Revolution\modSymLink;
 use MODX\Revolution\modWebLink;
@@ -15,10 +15,16 @@ class Scanner {
     private modX $modx;
     private MediaFinder $mf;
 
+    private array $skip = [];
+
     public function __construct(modX &$modx)
     {
         $this->modx =& $modx;
         $this->mf = new MediaFinder($this->modx);
+        $skip = $this->modx->getOption('mediascanner.skip_scan');
+        if (!empty($skip)) {
+            $this->skip = explode(',', $skip);
+        }
     }
 
     public function scan(modResource $resource)
@@ -27,16 +33,28 @@ class Scanner {
         if (!$isValid) return;
 
         $this->clearResourceLinks($resource->id);
-        $this->renderResource($resource);
-
-        $this->mf->findMedia($this->modx->resource->_output, function($url) use ($resource) {
-            $this->addMedia($url, $resource->id);
-        });
+        try {
+            $this->renderResource($resource);
+            $this->mf->findMedia($this->modx->resource->_output, function($url) use ($resource) {
+                $this->addMedia($url, $resource->id);
+            });
+        } catch (\Exception $e) {
+            $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Error rendering resource: ' . $resource->id);
+        }
+        $this->modx->config['modResponse.class'] = modResponse::class;
+        $this->modx->response = new modResponse($this->modx);
     }
 
     private function validateResource(modResource $resource) {
-        if ($resource->ContentType->mime_type !== 'text/html') return false;
-        if (in_array($resource->class_key, [modWebLink::class, modSymLink::class])) return false;
+        if (in_array($resource->id, $this->skip)) {
+            return false;
+        }
+        if ($resource->ContentType->mime_type !== 'text/html') {
+            return false;
+        }
+        if (in_array($resource->class_key, [modWebLink::class, modSymLink::class])) {
+            return false;
+        }
 
         return true;
     }
@@ -54,7 +72,9 @@ class Scanner {
         $this->modx->resource = $resource;
         $this->modx->resourceIdentifier = $resource->id;
         $this->modx->elementCache = [];
-        $this->modx->request = new modRequest($this->modx, [], [], [], []);
+        $this->modx->config['modResponse.class'] = scanResponse::class;
+        $this->modx->response = new scanResponse($this->modx);
+        $this->modx->request = new scanRequest($this->modx, [], [], [], []);
         $this->modx->resource->prepare();
     }
 

@@ -12,11 +12,11 @@ If the automatic indexing fails, you can run the included indexing script manual
 
 To run the indexing script, you need to SSH into your server and run the following command:
 
-    php /path/to/your/modx/core/components/linkstrategy/cron/generate.2x.php
+    php /path/to/your/modx/core/components/mediascanner/cron/generate.2x.php
 
 Or for MODX 3.x Versions: 
     
-    php /path/to/your/modx/core/components/linkstrategy/cron/generate.3x.php
+    php /path/to/your/modx/core/components/mediascanner/cron/generate.3x.php
 
 Once completed, this will output the number of resources indexed. You can then go to the Link Strategy manager page and verify it is showing the newly discovered links.
 
@@ -26,10 +26,10 @@ In general, the automatic indexing should work fine. It renders a page on save, 
 
 ## Disable Automatic Indexing
 
-Due to the way automatic indexing works, it may slow down the save event on your site depending on how your site is set up. If you want to disable automatic indexing, you can do so by setting the `linkstrategy.allow_regenerate_onsave` system setting to `No`. It is recommended you then run the indexing script manually via cron.
+Due to the way automatic indexing works, it may slow down the save event on your site depending on how your site is set up. If you want to disable automatic indexing, you can do so by setting the `mediascanner.allow_regenerate_onsave` system setting to `No`. It is recommended you then run the indexing script manually via cron.
 
 ## Disable "Regenerate Links" Button
 
 In the event you have a large site that consistently fails to generate links with the provided button. You can disable it in system settings. This will prevent the button from showing up in the manager page. It is recommended you then run the indexing script manually via cron.
 
-To disable the button, set the system setting `linkstrategy.allow_regenerate_button` to `No`.
+To disable the button, set the system setting `mediascanner.allow_regenerate_button` to `No`.

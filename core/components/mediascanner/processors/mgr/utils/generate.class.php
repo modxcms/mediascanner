@@ -42,8 +42,8 @@ class MediaScannerUtilsGenerateProcessor extends modProcessor
             $this->modx->log(
                 \modX::LOG_LEVEL_INFO,
                 $this->modx->lexicon('mediascanner.scan.status', [
-                    'id' => $this->resource->id,
-                    'pagetitle' => $this->resource->pagetitle,
+                    'id' => $resource->id,
+                    'pagetitle' => $resource->pagetitle,
                 ])
             );
         }

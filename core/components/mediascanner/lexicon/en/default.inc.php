@@ -43,3 +43,5 @@ $_lang['mediascanner.resource.media_desc'] = 'View media used in this resource';
 $_lang['mediascanner.context_key'] = 'Select Context';
 
 $_lang['mediascanner.err.source_required'] = 'Media Source is required';
+$_lang['mediascanner.err.scan_failed'] = 'Failed to scan for media';
+$_lang['mediascanner.err.scan_failed_desc'] = 'An error occurred while scanning for media. Please try again or check your site\'s error log for details.';
