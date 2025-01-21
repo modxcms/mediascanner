@@ -37,8 +37,6 @@ class Scanner
         } catch (\Exception $e) {
             $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Error rendering resource: ' . $resource->id);
         }
-        $this->modx->config['modResponse.class'] = 'modResponse';
-        $this->modx->response = new \modResponse($this->modx);
     }
 
     private function validateResource(\modResource $resource)
@@ -69,11 +67,14 @@ class Scanner
         $this->modx->resource = $resource;
         $this->modx->resourceIdentifier = $resource->id;
         $this->modx->elementCache = [];
+        $origResponse = $this->modx->config['modResponse.class'];
         $this->modx->config['modResponse.class'] = scanResponse::class;
         $this->modx->response = new scanResponse($this->modx);
         $this->modx->request = new scanRequest($this->modx, [], [], [], []);
         $this->modx->setOption('parser_max_iterations', 0);
         $this->modx->resource->prepare();
+        $this->modx->config['modResponse.class'] = $origResponse;
+        $this->modx->response = new $origResponse($this->modx);
     }
 
     protected function addMedia($url, $resourceId)

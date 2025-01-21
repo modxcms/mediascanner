@@ -4,8 +4,9 @@ namespace MediaScanner\v3;
 
 use MODX\Revolution\modSystemSetting;
 use MODX\Revolution\modX;
+use MODX\Revolution\modRequest;
 
-class scanRequest extends \modRequest
+class scanRequest extends modRequest
 {
     public function getResource($method, $identifier, array $options = [])
     {
