@@ -70,13 +70,12 @@ class Scanner {
         $this->modx->resource = $resource;
         $this->modx->resourceIdentifier = $resource->id;
         $this->modx->elementCache = [];
-        $origResponse = $this->modx->config['modResponse.class'];
         $this->modx->config['modResponse.class'] = scanResponse::class;
         $this->modx->response = new scanResponse($this->modx);
         $this->modx->request = new scanRequest($this->modx, [], [], [], []);
         $this->modx->resource->prepare();
-        $this->modx->config['modResponse.class'] = $origResponse;
-        $this->modx->response = new $origResponse($this->modx);
+        $this->modx->config['modResponse.class'] = modResponse::class;
+        $this->modx->response = new modResponse($this->modx);
     }
 
     protected function addMedia($url, $resourceId)
