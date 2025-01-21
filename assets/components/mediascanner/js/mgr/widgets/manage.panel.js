@@ -9,6 +9,8 @@ mediaScanner.panel.Manage = function (config) {
         saveMsg: _("mediascanner.scan.ing"),
         baseParams: {
             action: mediaScanner.config.modx3 ? "MediaScanner\\Processors\\Utils\\Generate" : "mgr/utils/generate",
+            register: 'mgr',
+            topic: '/mediascanner/mgr/generate/'
         },
         useLoadingMask: true,
         items: [
@@ -67,8 +69,31 @@ mediaScanner.panel.Manage = function (config) {
         }
         ],
         listeners: {
+            'beforeSubmit': function(f, o, c) {
+                var msConsole = MODx.load({
+                    xtype: 'modx-console',
+                    register: 'mgr',
+                    topic: '/mediascanner/mgr/generate/',
+                    show_filename: 0,
+                    id: 'mediascanner-console'
+                });
+
+                msConsole.show(Ext.getBody());
+            },
             'failure': function(f, r, o, c) {
+                var msConsole = Ext.getCmp('mediascanner-console');
+                if (msConsole) {
+                    msConsole.fireEvent('complete');
+                }
                 MODx.msg.alert(_('mediascanner.err.scan_failed'), _('mediascanner.err.scan_failed_desc'));
+            },
+            'success':  function(f, r, o, c) {
+                var msConsole = Ext.getCmp('mediascanner-console');
+                if (msConsole) {
+                    msConsole.fireEvent('complete');
+                    msConsole.fireEvent('hide');
+                    msConsole = null;
+                }
             }
         }
     });

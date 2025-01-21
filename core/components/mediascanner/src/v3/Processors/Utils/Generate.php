@@ -20,6 +20,7 @@ class Generate extends Processor
 
     public function generate()
     {
+        ini_set('max_execution_time', 300);
         $c = $this->modx->newQuery(modResource::class);
         $c->where([
             'contentType' => 'text/html',

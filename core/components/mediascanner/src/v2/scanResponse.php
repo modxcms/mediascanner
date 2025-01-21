@@ -2,6 +2,8 @@
 
 namespace MediaScanner\v2;
 
+require_once MODX_CORE_PATH . 'model/modx/modresponse.class.php';
+
 class scanResponse extends \modResponse
 {
     public function outputContent(array $options = []) {

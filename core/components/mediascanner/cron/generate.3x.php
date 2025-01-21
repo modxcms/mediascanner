@@ -18,5 +18,9 @@ if (!is_object($modx) || !($modx instanceof \MODX\Revolution\modX)) {
 }
 
 $modx->startTime = $tStart;
+
+$modx->setOption('log_target', 'ECHO');
+
 $modx->initialize('web');
+
 return $modx->runProcessor(\MediaScanner\Processors\Utils\Generate::class, []);

@@ -32,7 +32,7 @@ class scanRequest extends modRequest
             $value = trim($value, ',');
             $setting->set('value', $value);
             $setting->save();
-
+            $this->modx->cacheManager->refresh();
         }
         $this->modx->log(modX::LOG_LEVEL_INFO, 'Resource Request: ' . print_r($method, true) . ' '. print_r($identifier, true));
         $resource = parent::getResource($method, $identifier, $options);

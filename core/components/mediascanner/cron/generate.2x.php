@@ -22,6 +22,8 @@ if (!is_object($modx) || !($modx instanceof modX)) {
     exit();
 }
 
+$modx->setOption('log_target', 'ECHO');
+
 $modx->initialize('mgr');
 
 $modx->startTime= $tStart;
