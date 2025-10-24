@@ -29,6 +29,9 @@ $_lang['mediascanner.linked_media.variants'] = 'Link Variants';
 $_lang['mediascanner.linked_media.variant'] = 'Unique Link';
 $_lang['mediascanner.linked_media.explore'] = 'Explore Text "[[+text]]"';
 
+$_lang['mediascanner.links.explore'] = 'Explore Url "[[+url]]"';
+$_lang['mediascanner.links.explore_desc'] = 'Below are resources that link to this media.';
+
 $_lang['mediascanner.scan.status'] = 'Scanned for Media on [[+pagetitle]] ([[+id]])';
 $_lang['mediascanner.scan.complete'] = 'Scanned for Media on [[+count]] Resources';
 $_lang['mediascanner.scan'] = 'Scan Media';

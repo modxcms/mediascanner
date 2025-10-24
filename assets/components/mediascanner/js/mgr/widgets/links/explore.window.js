@@ -1,14 +1,20 @@
 mediaScanner.window.LinksExplore = function (config) {
     config = config || {};
     Ext.applyIf(config, {
-        title: _("mediaScanner.links.explore", { url: config.record.url }),
+        title: _("mediascanner.links.explore", { url: config.record.url }),
         closeAction: "close",
         width: 800,
         height: 600,
         autoHeight: false,
-        fields: [
-        {
-            html: _("mediaScanner.links.explore_desc"),
+        fields: [{xtype: 'box'
+            , cls: 'ms-preview'
+            , anchor: 0
+            , autoEl: {
+                tag: 'img',
+                src: config.record.url,
+                style: {height: '100px'},
+                'ext:qtip': '<img src=\'' + config.record.url + '\'/>'
+            }
         }, {
             xtype: "mediascanner-grid-links-explore",
             record: config.record,

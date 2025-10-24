@@ -19,3 +19,9 @@
 .ms-used a span {
   color: green;
 }
+
+.ms-preview {
+  object-fit: contain;
+  display: block;
+  margin: 15px auto;
+}
