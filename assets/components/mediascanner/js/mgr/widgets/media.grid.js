@@ -9,7 +9,7 @@ mediaScanner.grid.Media = function (config) {
     },
     autosave: false,
     preventSaveRefresh: true,
-    fields: ["id", "url", "msUsed"],
+    fields: ["id", "url", "msUsed", "thumbnail"],
     paging: true,
     remoteSort: true,
     emptyText: _("mediascanner.global.no_records"),

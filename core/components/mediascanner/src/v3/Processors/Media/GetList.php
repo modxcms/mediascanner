@@ -4,7 +4,8 @@ namespace MediaScanner\v3\Processors\Media;
 use MediaScanner\v3\Model\Media;
 use MediaScanner\v3\Model\MediaResources;
 use MODX\Revolution\Processors\Model\GetListProcessor;
-use xPDOQuery;
+use xPDO\Om\xPDOObject;
+use xPDO\Om\xPDOQuery;
 
 class GetList extends GetListProcessor
 {
@@ -40,6 +41,27 @@ class GetList extends GetListProcessor
         }
 
         return $c;
+    }
+
+    public function prepareRow(xPDOObject $object)
+    {
+        if ($this->getProperty('export')) {
+            return parent::prepareRow($object);
+        }
+        $imageQuery = http_build_query([
+            'src' => rawurlencode($object->get('url')),
+            'w' => 100,
+            'h' => 100,
+            'HTTP_MODAUTH' => $this->modx->user->getUserToken('mgr'),
+            'f' => 'jpg',
+            'q' => '60',
+            'wctx' => 'mgr',
+            'source' => 1,
+            'ar' => 'x'
+        ]);
+        $image = $this->modx->getOption('connectors_url', MODX_CONNECTORS_URL) . 'system/phpthumb.php?' . $imageQuery;
+        $object->set('thumbnail', $image);
+        return $object->toArray();
     }
 
     public function outputArray(array $array, $count = false)

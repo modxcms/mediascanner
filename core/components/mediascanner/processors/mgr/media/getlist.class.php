@@ -36,6 +36,27 @@ class MediaScannerMediaGetListProcessor extends modObjectGetListProcessor
         return $c;
     }
 
+    public function prepareRow(xPDOObject $object)
+    {
+        if ($this->getProperty('export')) {
+            return parent::prepareRow($object);
+        }
+        $imageQuery = http_build_query([
+            'src' => rawurlencode($object->get('url')),
+            'w' => 100,
+            'h' => 100,
+            'HTTP_MODAUTH' => $this->modx->user->getUserToken('mgr'),
+            'f' => 'jpg',
+            'q' => '60',
+            'wctx' => 'mgr',
+            'source' => 1,
+            'ar' => 'x'
+        ]);
+        $image = $this->modx->getOption('connectors_url', MODX_CONNECTORS_URL) . 'system/phpthumb.php?' . $imageQuery;
+        $object->set('thumbnail', $image);
+        return $object->toArray();
+    }
+
     public function outputArray(array $array, $count = false)
     {
         if ($this->getProperty('export')) {

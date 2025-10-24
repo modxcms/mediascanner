@@ -11,7 +11,7 @@ mediaScanner.window.LinksExplore = function (config) {
             , anchor: 0
             , autoEl: {
                 tag: 'img',
-                src: config.record.url,
+                src: config.record.thumbnail,
                 style: {height: '100px'},
                 'ext:qtip': '<img src=\'' + config.record.url + '\'/>'
             }
