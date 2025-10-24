@@ -6,8 +6,10 @@ mediaScanner.window.LinksExplore = function (config) {
         width: 800,
         height: 600,
         autoHeight: false,
-        fields: [{xtype: 'box'
+        fields: [{
+            xtype: 'box'
             , cls: 'ms-preview'
+            , hidden: !config.record.thumbnail
             , anchor: 0
             , autoEl: {
                 tag: 'img',

@@ -39,7 +39,11 @@ class MediaScannerMediaGetListProcessor extends modObjectGetListProcessor
     public function prepareRow(xPDOObject $object)
     {
         if ($this->getProperty('export')) {
-            return parent::prepareRow($object);
+            return $object->toArray();
+        }
+        $extension = pathinfo($object->get('url'), PATHINFO_EXTENSION);
+        if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+            return $object->toArray();
         }
         $imageQuery = http_build_query([
             'src' => rawurlencode($object->get('url')),
