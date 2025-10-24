@@ -47,21 +47,23 @@ class GetList extends GetListProcessor
     public function outputArray(array $array, $count = false)
     {
         if ($this->getProperty('export')) {
+            ob_flush();
+            ob_start();
+            $filename = 'media_links_'.time() .'.csv';
+            header('Content-Type: text/csv; charset=utf-8');
+            header('Content-Disposition:attachment; filename="'.$filename.'"');
             $first = $array[0];
             if (is_object($first)) {
                 $first = $first->toArray();
             }
-            $filename = 'media_links_'.time() .'.csv';
+            ob_end_clean();
             $fp = fopen('php://output', 'w');
             fputcsv($fp, array_keys($first));
             foreach ($array as $arr) {
                 fputcsv($fp, array_values($arr));
             }
             fclose($fp);
-            header('Content-type: text/csv');
-            header('Content-disposition:attachment; filename="'.$filename.'"');
-            readfile($filename);
-            return '';
+            exit;
         }
 
         return parent::outputArray($array, $count);
