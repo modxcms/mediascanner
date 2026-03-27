@@ -48,3 +48,10 @@ $_lang['mediascanner.context_key'] = 'Select Context';
 $_lang['mediascanner.err.source_required'] = 'Media Source is required';
 $_lang['mediascanner.err.scan_failed'] = 'Failed to scan for media';
 $_lang['mediascanner.err.scan_failed_desc'] = 'An error occurred while scanning for media. Please try again or check your site\'s error log for details.';
+
+$_lang['setting_mediascanner.allow_regenerate_button'] = 'Allow "Scan Media" Button';
+$_lang['setting_mediascanner.allow_regenerate_button.desc'] = 'Whether or not to show the "Scan Media" button';
+$_lang['setting_mediascanner.scan_on_save'] = 'Scan On Save';
+$_lang['setting_mediascanner.scan_on_save.desc'] = 'Automatically scan a resource on save.';
+$_lang['setting_mediascanner.skip_scan'] = 'Skip Scanning';
+$_lang['setting_mediascanner.skip_scan.desc'] = 'Comma-separated list of resources to not scan.';

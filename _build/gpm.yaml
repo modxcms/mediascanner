@@ -3,7 +3,7 @@ version: 1.2.0
 lowCaseName: mediascanner
 namespace: MediaScanner
 description: Scan unused media
-author: not matdave
+author: theboxer
 menus:
   - text: mediascanner.menu
     description: mediascanner.menu_desc

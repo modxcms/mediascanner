@@ -4,7 +4,7 @@
   "lowCaseName": "mediascanner",
   "namespace": "MediaScanner",
   "description": "Scan unused media",
-  "author": "not matdave",
+  "author": "theboxer",
   "package" : {
     "menus": [
       {
