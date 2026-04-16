@@ -23,4 +23,4 @@ $modx->setOption('log_target', 'ECHO');
 
 $modx->initialize('web');
 
-return $modx->runProcessor(\MediaScanner\Processors\Utils\Generate::class, []);
+return $modx->runProcessor(\MediaScanner\v3\Processors\Utils\Generate::class, []);
