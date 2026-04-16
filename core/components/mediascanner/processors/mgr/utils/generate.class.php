@@ -20,14 +20,7 @@ class MediaScannerUtilsGenerateProcessor extends modProcessor
         $c = $this->modx->newQuery('modResource');
         $c->where([
             'contentType' => 'text/html',
-            [
-                [
-                    'class_key:!=' => 'modWebLink'
-                ],
-                [
-                    'class_key:!=' => 'modSymLink'
-                ],
-            ]
+            'class_key:NOT IN' => ['modWebLink', 'modSymLink']
         ]);
 
         $count = $this->modx->getCount('modResource', $c);
