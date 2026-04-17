@@ -1,5 +1,5 @@
 <?php
-namespace MediaScanner\Processors\Media\Links;
+namespace MediaScanner\v3\Processors\Media\Links;
 
 use MediaScanner\v3\Model\Media;
 use MediaScanner\v3\Model\MediaResources;

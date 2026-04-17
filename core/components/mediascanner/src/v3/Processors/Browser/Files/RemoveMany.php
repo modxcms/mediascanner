@@ -10,15 +10,18 @@ class RemoveMany extends Processor
     /** @var modMediaSource|modFileMediaSource $source */
     public $source;
 
-    public function checkPermissions() {
+    public function checkPermissions()
+    {
         return $this->modx->hasPermission('file_remove');
     }
 
-    public function getLanguageTopics() {
+    public function getLanguageTopics()
+    {
         return ['file', 'mediascanner:default'];
     }
 
-    public function process() {
+    public function process()
+    {
         $files = $this->getProperty('files');
         if (empty($files)) {
             return $this->modx->error->failure($this->modx->lexicon('file_err_ns'));
@@ -35,6 +38,7 @@ class RemoveMany extends Processor
 
         foreach ($files as $file) {
             $file = preg_replace('/[\.]{2,}/', '', $file);
+            $file = urldecode($file);
             $success = $this->source->removeObject($file);
 
             if (empty($success)) {
@@ -51,14 +55,15 @@ class RemoveMany extends Processor
     /**
      * @return boolean|string
      */
-    public function getSource() {
-        $source = $this->getProperty('source',null);
+    public function getSource()
+    {
+        $source = $this->getProperty('source', null);
         if (empty($source)) {
             return $this->modx->lexicon('mediascanner.err.source_required');
         }
 
         /** @var modMediaSource $source */
-        $this->source = modMediaSource::getDefaultSource($this->modx,$source);
+        $this->source = modMediaSource::getDefaultSource($this->modx, $source);
         if (!$this->source->getWorkingContext()) {
             return $this->modx->lexicon('permission_denied');
         }

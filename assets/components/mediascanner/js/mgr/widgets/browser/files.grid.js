@@ -160,8 +160,14 @@ Ext.extend(mediaScanner.grid.Files, MODx.grid.Grid, {
   },
 
   selectedDelete: function() {
+    let names = this.selectedRecords;
+    // replace %2F with /
+    names = names.map(name => {
+      const path = name.split('%2F');
+      return path.pop();
+    });
     MODx.msg.confirm({
-      text: _('file_confirm_remove'),
+      text: _('file_remove_confirm', {file: names.join(', ')}),
       url: mediaScanner.getConnector(),
       params: {
         action: mediaScanner.getAction('Browser\\Files\\RemoveMany'),
@@ -180,7 +186,7 @@ Ext.extend(mediaScanner.grid.Files, MODx.grid.Grid, {
   singleDelete: function() {
     console.log(this);
     MODx.msg.confirm({
-      text: _('file_confirm_remove'),
+      text: _('file_remove_confirm', {file: this.menu.record.name}),
       url: mediaScanner.getConnector(),
       params: {
         action: mediaScanner.getAction('Browser\\Files\\Remove'),
