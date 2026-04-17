@@ -27,10 +27,10 @@ class Scanner {
         }
     }
 
-    public function scan(modResource $resource)
+    public function scan(modResource $resource): bool
     {
         $isValid = $this->validateResource($resource);
-        if (!$isValid) return;
+        if (!$isValid) return false;
 
         $this->clearResourceLinks($resource->id);
         try {
@@ -40,7 +40,9 @@ class Scanner {
             });
         } catch (\Exception $e) {
             $this->modx->log(\modX::LOG_LEVEL_ERROR, 'Error rendering resource: ' . $resource->id);
+            return false;
         }
+        return true;
     }
 
     private function validateResource(modResource $resource) {

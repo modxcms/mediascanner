@@ -8,7 +8,7 @@ mediaScanner.panel.Manage = function (config) {
         bypassValidCheck: true,
         saveMsg: _("mediascanner.scan.ing"),
         baseParams: {
-            action: mediaScanner.config.modx3 ? "MediaScanner\\Processors\\Utils\\Generate" : "mgr/utils/generate",
+            action: mediaScanner.getAction('Utils\\Generate'),
             register: 'mgr',
             topic: '/mediascanner/mgr/generate/'
         },
