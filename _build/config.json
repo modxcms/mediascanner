@@ -50,6 +50,14 @@
     ]
   },
   "build": {
+    "options": {
+      "abort_install_on_vehicle_fail": true
+    },
+    "validator": {
+      "validators": [
+        "requirements.validator.php"
+      ]
+    },
     "license": "LICENSE.md",
     "changelog": "CHANGELOG.md",
     "readme": "README.md"
